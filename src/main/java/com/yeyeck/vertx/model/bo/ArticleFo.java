@@ -1,6 +1,7 @@
-package com.yeyeck.vertx.router.fo;
+package com.yeyeck.vertx.model.bo;
 
-import com.yeyeck.vertx.pojo.Article;
+import com.yeyeck.vertx.model.po.Article;
+
 import io.vertx.core.json.JsonObject;
 import lombok.Data;
 

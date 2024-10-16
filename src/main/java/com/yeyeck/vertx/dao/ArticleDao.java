@@ -1,7 +1,7 @@
-package com.yeyeck.vertx.dao.impl;
+package com.yeyeck.vertx.dao;
 
-import com.yeyeck.vertx.dao.IArticleDao;
-import com.yeyeck.vertx.pojo.Article;
+import com.yeyeck.vertx.model.po.Article;
+
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.mysqlclient.MySQLClient;
@@ -10,9 +10,9 @@ import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.Tuple;
 
-public class ArticleDaoImpl implements IArticleDao {
+public class ArticleDao {
 
-  @Override
+  
   public Future<Integer> add(SqlConnection connection, Article article) {
     Promise<Integer> promise = Promise.promise();
     String sql = "insert into t_article(title, abstract_text, content) values (?, ?, ?)";
@@ -30,7 +30,7 @@ public class ArticleDaoImpl implements IArticleDao {
     return promise.future();
   }
 
-  @Override
+  
   public Future<Article> getById(SqlConnection connection, Integer id) {
     Promise<Article> promise = Promise.promise();
     String sql = "select id, title, abstract_text, content from t_article where id = ?";
@@ -49,7 +49,7 @@ public class ArticleDaoImpl implements IArticleDao {
     return promise.future();
   }
 
-  @Override
+  
   public Future<Integer> update(SqlConnection connection, Article article) {
     Promise<Integer> promise = Promise.promise();
     String sql = "update t_article set title = ?, abstract_text = ?, content = ? where id = ?";
@@ -65,7 +65,7 @@ public class ArticleDaoImpl implements IArticleDao {
     return promise.future();
   }
 
-  @Override
+  
   public Future<Integer> deleteById(SqlConnection connection, Integer id) {
     Promise<Integer> promise = Promise.promise();
     String sql = "delete from t_article where id = ?";

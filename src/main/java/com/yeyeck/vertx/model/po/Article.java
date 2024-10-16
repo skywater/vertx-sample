@@ -1,4 +1,4 @@
-package com.yeyeck.vertx.pojo;
+package com.yeyeck.vertx.model.po;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.sqlclient.Row;
