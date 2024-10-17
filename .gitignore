@@ -9,6 +9,7 @@
 /**/.classpath
 .project
 *.log
+*.log.*
 
 ### Vert.x ###
 .vertx/

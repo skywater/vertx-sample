@@ -1,7 +1,7 @@
 package com.yeyeck.vertx.service;
 
 import com.yeyeck.vertx.dao.ArticleDao;
-import com.yeyeck.vertx.model.bo.ArticleFo;
+import com.yeyeck.vertx.model.bo.ArticleBo;
 import com.yeyeck.vertx.model.po.Article;
 import com.yeyeck.vertx.util.SqlUtil;
 import io.vertx.core.Future;
@@ -15,7 +15,7 @@ public class ArticleService {
 
 	private final ArticleDao articleDao = new ArticleDao();
 
-	public Future<Integer> addArticle(ArticleFo articleFo) {
+	public Future<Integer> addArticle(ArticleBo articleFo) {
 		Promise<Integer> promise = Promise.promise();
 		Article article = articleFo.toArticle();
 		SqlUtil.pool().getConnection(ar -> {
@@ -54,7 +54,7 @@ public class ArticleService {
 		return promise.future();
 	}
 
-	public Future<Integer> update(Integer id, ArticleFo articleFo) {
+	public Future<Integer> update(Integer id, ArticleBo articleFo) {
 		Promise<Integer> promise = Promise.promise();
 		Article article = articleFo.toArticle();
 		article.setId(id);

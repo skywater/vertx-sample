@@ -6,13 +6,13 @@ import io.vertx.core.json.JsonObject;
 import lombok.Data;
 
 @Data
-public class ArticleFo {
+public class ArticleBo {
   private Integer id;
   private String title;
   private String abstractText;
   private String content;
 
-  public ArticleFo(JsonObject jsonObject) {
+  public ArticleBo(JsonObject jsonObject) {
     this.id = jsonObject.getInteger("id");
     this.title = jsonObject.getString("title");
     this.abstractText = jsonObject.getString("abstractText");
