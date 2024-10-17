@@ -1,6 +1,7 @@
 package com.yeyeck.vertx.service;
 
 import com.yeyeck.vertx.dao.ArticleDao;
+import com.yeyeck.vertx.enums.DbType;
 import com.yeyeck.vertx.model.bo.ArticleBo;
 import com.yeyeck.vertx.model.po.Article;
 import com.yeyeck.vertx.util.SqlUtil;
@@ -18,7 +19,7 @@ public class ArticleService {
 	public Future<Integer> addArticle(ArticleBo articleFo) {
 		Promise<Integer> promise = Promise.promise();
 		Article article = articleFo.toArticle();
-		SqlUtil.pool().getConnection(ar -> {
+		SqlUtil.poolMysql().getConnection(ar -> {
 			if (ar.succeeded()) {
 				SqlConnection connection = ar.result();
 				articleDao.add(connection, article).onSuccess(integer -> {
@@ -37,7 +38,7 @@ public class ArticleService {
 
 	public Future<Article> getById(Integer id) {
 		Promise<Article> promise = Promise.promise();
-		SqlUtil.pool().getConnection(as -> {
+		SqlUtil.poolMysql().getConnection(as -> {
 			if (as.succeeded()) {
 				SqlConnection connection = as.result();
 				articleDao.getById(connection, id).onSuccess(article -> {
@@ -58,7 +59,7 @@ public class ArticleService {
 		Promise<Integer> promise = Promise.promise();
 		Article article = articleFo.toArticle();
 		article.setId(id);
-		SqlUtil.getConnection().onSuccess(connection -> {
+		SqlUtil.getConnection(DbType.MYSQL).onSuccess(connection -> {
 			articleDao.update(connection, article).onSuccess(integer -> {
 				connection.close();
 				promise.complete(integer);
@@ -72,7 +73,7 @@ public class ArticleService {
 
 	public Future<Integer> deleteById(Integer id) {
 		Promise<Integer> promise = Promise.promise();
-		SqlUtil.getConnection().onSuccess(connection -> {
+		SqlUtil.getConnection(DbType.MYSQL).onSuccess(connection -> {
 			articleDao.deleteById(connection, id).onSuccess(res -> {
 				// 正确执行sql, 释放connection
 				connection.close();
@@ -97,7 +98,7 @@ public class ArticleService {
 		article.setAbstractText("transaction");
 		article.setContent("transaction");
 		article.setId(33);
-		SqlUtil.getConnection().onSuccess(connection -> {
+		SqlUtil.getConnection(DbType.MYSQL).onSuccess(connection -> {
 			// 开始一个transaction
 			connection.begin(ar -> {
 				if (ar.succeeded()) {

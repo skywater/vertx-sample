@@ -6,6 +6,7 @@ import com.yeyeck.vertx.cfg.filter.CommonExceptionHandler;
 import com.yeyeck.vertx.cfg.filter.TraceIdGenerateFilter;
 import com.yeyeck.vertx.router.ArticleRouter;
 import com.yeyeck.vertx.router.UserRouter;
+import com.yeyeck.vertx.verticle.JdbcVerticle;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -17,14 +18,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MainVerticle extends AbstractVerticle {
 
+	private static final PropertiesUtil PROPERTIES = new PropertiesUtil("application.properties");
+
 	@Override
 	public void start(Promise<Void> startPromise) throws Exception {
 		long startTime = System.currentTimeMillis();
-		PropertiesUtil propertiesUtil = new PropertiesUtil("application.properties");
-		int port = propertiesUtil.getIntegerProperty("server.port", 8080);
+		int port = PROPERTIES.getIntegerProperty("server.port", 8080);
 
 		Router router = Router.router(vertx);
-		router.route().handler(BodyHandler.create()).handler(new TraceIdGenerateFilter()).failureHandler(new CommonExceptionHandler());
+		router.route().handler(BodyHandler.create()).handler(new TraceIdGenerateFilter())
+				.failureHandler(new CommonExceptionHandler());
 		// 创建一个http server 并将所有请求交给 router 来管理
 		vertx.createHttpServer().requestHandler(router).listen(port, http -> {
 			if (http.succeeded()) {
@@ -40,9 +43,9 @@ public class MainVerticle extends AbstractVerticle {
 		new UserRouter().init(router);
 	}
 
-	
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(new MainVerticle());
+		vertx.deployVerticle(new JdbcVerticle(PROPERTIES));
 	}
 }
