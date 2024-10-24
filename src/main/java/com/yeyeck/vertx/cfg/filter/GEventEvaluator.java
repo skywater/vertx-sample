@@ -62,8 +62,7 @@ public class GEventEvaluator extends EventEvaluatorBase<ILoggingEvent> {
         // insert the expression into script text
         scriptText = scriptText.replace("//EXPRESSION", expression);
 
-        GroovyClassLoader gLoader = new GroovyClassLoader(classLoader);
-        try {
+        try(GroovyClassLoader gLoader = new GroovyClassLoader(classLoader)) {
             Class scriptClass = gLoader.parseClass(scriptText);
 
             GroovyObject goo = (GroovyObject) scriptClass.newInstance();
